@@ -1,7 +1,6 @@
 .wordButtonContainer{
   display: flex;
-  justify-content: space-around;
-  
+  justify-content: center;
 }
 
 .wordButton {
@@ -14,7 +13,6 @@
     outline:none;
     font-size: 3rem;
     font-weight: 900;
-    margin: 10px;
 }
 
 .wordButton:hover {

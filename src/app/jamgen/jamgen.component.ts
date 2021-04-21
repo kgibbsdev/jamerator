@@ -18,7 +18,9 @@ export class JamgenComponent implements OnInit {
   }
 
   randomIndex() {
-    return Math.floor(Math.random() * this.words.length - 1);
+    let randomIndex = Math.floor(Math.random() * (this.words.length - 1));
+    console.log('randomIndex', randomIndex);
+    return randomIndex;
   }
 
   addWord(timesToRepeat: number = 1): void {
@@ -43,6 +45,8 @@ export class JamgenComponent implements OnInit {
     console.log('this.words', this.words);
     //replace the selected word
     this.sentence[indexToReplace] = newWord;
+
+    this.words.splice(newIndex, 1);
 
     //put the replaced word back into the rotation
     this.words.push(oldWord);
