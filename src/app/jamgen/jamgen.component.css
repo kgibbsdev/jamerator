@@ -1,0 +1,23 @@
+.wordButtonContainer{
+  display: flex;
+  justify-content: space-around;
+  
+}
+
+.wordButton {
+  outline: none;
+  background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    font-size: 3rem;
+    font-weight: 900;
+    margin: 10px;
+}
+
+.wordButton:hover {
+  transform: scale(1.1);
+  text-decoration: underline;
+}

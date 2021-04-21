@@ -1,1 +1,9 @@
-<p>jamgen works!</p>
+<div>
+  <button (click)="addWord(1)">Add a word!</button>
+</div>
+
+<div class="wordButtonContainer">
+  <span *ngFor="let word of sentence; index as i">
+    <button class="wordButton" (click)="rerollWord(i)">{{word}}</button>
+  </span>
+</div>

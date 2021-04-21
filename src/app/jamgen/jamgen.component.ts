@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Words } from '../words';
 
 @Component({
   selector: 'app-jamgen',
@@ -7,9 +8,48 @@ import { Component, OnInit } from '@angular/core';
 })
 export class JamgenComponent implements OnInit {
 
+  words: string[] = Words;
+  sentence: string[] = [];
+
   constructor() { }
 
   ngOnInit(): void {
+    this.addWord(3);
   }
+
+  randomIndex() {
+    return Math.floor(Math.random() * this.words.length - 1);
+  }
+
+  addWord(timesToRepeat: number = 1): void {
+    if (this.words.length > 0) {
+      let chosenIndex = this.randomIndex();
+      let chosenWord;
+
+      for (let i = 0; i < timesToRepeat; i++) {
+        chosenWord = this.words[chosenIndex];
+        this.words.splice(chosenIndex, 1);
+        this.sentence = [...this.sentence, chosenWord];
+      }
+    }
+  }
+
+  rerollWord(indexToReplace: number) {
+    let newIndex = this.randomIndex();
+    let oldWord = this.sentence[indexToReplace];
+    let newWord = this.words[newIndex];
+
+    console.log(`rerolling ${oldWord} into ${newWord}`);
+    console.log('this.words', this.words);
+    //replace the selected word
+    this.sentence[indexToReplace] = newWord;
+
+    //put the replaced word back into the rotation
+    this.words.push(oldWord);
+
+  }
+
+
+
 
 }
