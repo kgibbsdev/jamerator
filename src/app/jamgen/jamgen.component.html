@@ -4,6 +4,7 @@
 
 <div class="wordButtonContainer">
   <span *ngFor="let word of sentence; index as i">
-    <button class="wordButton" (click)="rerollWord(i)">{{word}}</button>
+    <button class="wordButton" (click)="onWordClicked(i, $event)">{{word}}</button>
   </span>
 </div>
+<p>Hold shift and click to use the <a target="_blank" href="http://www.datamuse.com/api/">datamuse word api</a></p>

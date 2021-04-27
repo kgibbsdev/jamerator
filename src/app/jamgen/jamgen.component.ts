@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { WordResult } from '../app.models';
 import { Words } from '../words';
+import { WordsApiService } from '../words-api.service';
 
 @Component({
   selector: 'app-jamgen',
@@ -11,21 +13,29 @@ export class JamgenComponent implements OnInit {
   words: string[] = Words;
   sentence: string[] = [];
 
-  constructor() { }
+  constructor(private wordsApiService: WordsApiService) { }
 
   ngOnInit(): void {
     this.addWord(3);
   }
 
-  randomIndex() {
-    let randomIndex = Math.floor(Math.random() * (this.words.length - 1));
+  onWordClicked(index: number, event: any) {
+    if(event.shiftKey) {
+      this.rerollSmart(index);
+    } else {
+      this.rerollWord(index);
+    }
+  }
+
+  randomIndex(max: number) {
+    let randomIndex = Math.floor(Math.random() * (max - 1));
     console.log('randomIndex', randomIndex);
     return randomIndex;
   }
 
   addWord(timesToRepeat: number = 1): void {
     if (this.words.length > 0) {
-      let chosenIndex = this.randomIndex();
+      let chosenIndex = this.randomIndex(this.words.length);
       let chosenWord;
 
       for (let i = 0; i < timesToRepeat; i++) {
@@ -37,7 +47,7 @@ export class JamgenComponent implements OnInit {
   }
 
   rerollWord(indexToReplace: number) {
-    let newIndex = this.randomIndex();
+    let newIndex = this.randomIndex(this.words.length);
     let oldWord = this.sentence[indexToReplace];
     let newWord = this.words[newIndex];
 
@@ -50,10 +60,23 @@ export class JamgenComponent implements OnInit {
 
     //put the replaced word back into the rotation
     this.words.push(oldWord);
-
   }
 
+  rerollSmart(indexToReplace: number) {
+    const oldWord = this.sentence[indexToReplace];
+    const wordOnLeft = indexToReplace !== 0;
+    const wordOnRight = indexToReplace !== (this.sentence.length - 1);
 
+    this.wordsApiService.getWords({
+      leftContext: wordOnLeft ? this.sentence[indexToReplace - 1] : null,
+      rightContext: wordOnRight ? this.sentence[indexToReplace + 1] : null,
+    }).subscribe((newWordsList: Array<WordResult>) => {
+      console.log("New words from API", newWordsList);
 
-
+      const randomWord = newWordsList[0];
+      console.log("Chosen word", randomWord);
+      this.sentence[indexToReplace] = randomWord.word;
+      this.words.push(oldWord);
+    });
+  }
 }
